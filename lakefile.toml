@@ -1,0 +1,16 @@
+name = "messagepack"
+version = "0.1.0"
+defaultTargets = ["MessagePack", "Proofs", "messagepack"]
+
+[[lean_lib]]
+name = "MessagePack"
+
+[[lean_lib]]
+name = "Proofs"
+
+[[lean_lib]]
+name = "Spec"
+
+[[lean_exe]]
+name = "messagepack"
+root = "Main"
