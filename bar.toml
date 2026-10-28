@@ -1,0 +1,52 @@
+# Read by bar/check.py in Proven-Commons/mission.
+# See playbook/verified-bar.md there for what each field means.
+
+[project]
+name = "messagepack"
+# "in-progress" until every bar item passes, then "verified".
+status = "in-progress"
+page = "README.md"
+# GitHub handles of everyone who wrote the specification.
+spec_authors = ["abu-aska"]
+# The program people run. A change to it voids the approval.
+entry_points = ["Main.lean"]
+
+[spec]
+files = ["SPEC.md", "Spec.lean"]
+# The code under proof: the functions the statements are about.
+code = [
+  # The data type the statements are about, and its constructors.
+  "MessagePack.Value", "MessagePack.Value.nil",
+  "MessagePack.Value.bool", "MessagePack.Value.int",
+  "MessagePack.Value.float32", "MessagePack.Value.float64",
+  "MessagePack.Value.str", "MessagePack.Value.bin",
+  "MessagePack.Value.array", "MessagePack.Value.map",
+  "MessagePack.Value.ext",
+  # The byte forms and the printer.
+  "MessagePack.writeBE", "MessagePack.signedPattern",
+  "MessagePack.printInt", "MessagePack.strHeader",
+  "MessagePack.binHeader", "MessagePack.arrayHeader",
+  "MessagePack.mapHeader", "MessagePack.extTypeByte",
+  "MessagePack.printExt", "MessagePack.print",
+  "MessagePack.printList", "MessagePack.printPairs",
+  # Well formedness.
+  "MessagePack.WF",
+  # The marker table, the byte readers, and the parser.
+  "MessagePack.Kind", "MessagePack.classify",
+  "MessagePack.readNat", "MessagePack.readSigned",
+  "MessagePack.readBytes", "MessagePack.readExtBody",
+  "MessagePack.parseMany", "MessagePack.parsePairs",
+  "MessagePack.parseGo", "MessagePack.parse",
+]
+
+# One entry per approval, added in a pull request the reviewer approves.
+# [[spec.approval]]
+# reviewer = "github-handle"
+# date = "2026-11-02"
+# sha256 = "..."
+# record = "https://github.com/Proven-Commons/messagepack/pull/<n>"
+
+[tests]
+results = "tests/TEST-RESULTS.md"
+command = "python3 tests/run_tests.py"
+files = ["tests/run_tests.py"]

@@ -157,3 +157,28 @@ payload is the empty byte list and answers `none`.
 Example: the request `parse 207,0,0,0,0,0,0,0,1` is the value 1
 carried in a uint64. The answer is `ok:1`: the value read back,
 reprinted in its smallest form.
+
+## Properties and their theorems
+
+Each property a reader can check in the page (`README.md`)
+names its theorem. The theorems are stated in `Spec.lean`
+and proved in `Proofs/SpecProofs.lean`. The refusal theorems
+are single inputs, one for each named rejection case in the
+test harness; the tests in `tests/` cover each rule on many
+more inputs.
+
+| Property | Theorem |
+|----------|---------|
+| Parsing the printed form of a well formed value gives the value back | `Spec.parse_print` |
+| A str 8 header claiming more bytes than stand after it is refused | `Spec.rejects_str8_size_lie` |
+| A bin 16 header claiming more bytes than stand after it is refused | `Spec.rejects_bin16_size_lie` |
+| An ext 8 header claiming more payload bytes than stand after it is refused | `Spec.rejects_ext8_size_lie` |
+| An array 16 header claiming more values than stand after it is refused | `Spec.rejects_array16_cut_short` |
+| A fixarray claiming more values than stand after it is refused | `Spec.rejects_fixarray_count_runs_out` |
+| A map 32 header claiming 2^32 - 1 pairs with none after it is refused | `Spec.rejects_map32_cut_short` |
+| A fixext 4 value cut short in its data bytes is refused | `Spec.rejects_fixext4_cut_short` |
+| The never used marker 0xc1 is refused | `Spec.rejects_never_used` |
+| The never used marker is refused wherever a value is read, here inside an array | `Spec.rejects_never_used_inside_array` |
+| Bytes left over after one complete value are refused | `Spec.rejects_trailing_byte` |
+| A value cut short, here a uint 16 marker with no bytes after it, is refused | `Spec.rejects_truncated_uint16` |
+| The empty input is refused | `Spec.rejects_empty_input` |
